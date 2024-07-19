@@ -3,7 +3,9 @@
 </script>
 
 <template>
-<router-view></router-view>
+<div>
+  <h1 class="text-blue-700">hi</h1>
+</div>
 </template>
 
 <style scoped>
