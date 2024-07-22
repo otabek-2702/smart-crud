@@ -1,7 +1,7 @@
 import Login from '@/pages/Login.vue'
 import Products from '@/pages/Products.vue'
 import { createRouter, createWebHistory } from 'vue-router'
-
+import checkAuthMiddleware from './checkAuthMiddleware'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -21,8 +21,16 @@ const router = createRouter({
       name: 'categories',
       component: import('@/pages/Categories.vue')
     },
+    {
+      path: '/loading',
+      name: 'loading',
+      component: import('@/components/loading-spinner/LoadingSpinner.vue')
+    },
 
   ]
 })
+
+
+router.afterEach((to, from, failure) => checkAuthMiddleware(to, from, failure, router))
 
 export default router

@@ -1,62 +1,52 @@
-<script setup></script>
+<script setup>
+import axiosInstance from '@/axios';
+import Product from '@/components/product/Product.vue';
+import { onMounted, ref } from 'vue';
+
+const products = ref([]);
+
+onMounted(async () => {
+  const response = await axiosInstance.get('/products');
+  products.value = response.data.data.map((el) => {
+    const date = new Date(el.createdAt);
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear().toString();
+    let result = `${day}-${month}-${year}`;
+
+    return { ...el, createdAt: result };
+  });
+});
+</script>
 
 <template>
-  <div class="bg-gray-200">
+  <body class="bg-gray-200 h-screen">
     <div class="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
       <div>
-        <table class="min-w-full bg-white rounded-lg shadow-2xl">
+        <table class="min-w-full bg-white rounded-lg overflow-hidden shadow-2xl">
           <thead>
-            <tr>
-              <th class="py-2 px-4 border-b-2 border-gray-200">
-                <select class="border border-gray-300 rounded-md p-2">
-                  <option>Invoise</option>
-                  <option>Option 1</option>
-                  <option>Option 2</option>
-                </select>
-              </th>
-              <th class="py-2 px-4 border-b-2 border-gray-200">
-                <select class="border border-gray-300 rounded-md p-2">
-                  <option>Company</option>
-                  <option>Option 1</option>
-                  <option>Option 2</option>
-                </select>
-              </th>
-              <th class="py-2 px-4 border-b-2 border-gray-200">
-                <select class="border border-gray-300 rounded-md p-2">
-                  <option>Duo Data</option>
-                  <option>Option 1</option>
-                  <option>Option 2</option>
-                </select>
-              </th>
-
-              <th class="py-2 px-4 border-b-2 border-gray-200">
-                <select class="border border-gray-300 rounded-md p-2">
-                  <option>Amount</option>
-                  <option>Option 1</option>
-                  <option>Option 2</option>
-                </select>
-              </th>
+            <tr class="bg-gray-100">
+              <th class="py-2 px-4 border-b-2 border-gray-200">№</th>
+              <th class="py-2 px-4 border-b-2 border-gray-200">Name</th>
+              <th class="py-2 px-4 border-b-2 border-gray-200">Created data</th>
+              <th class="py-2 px-4 border-b-2 border-gray-200">Price</th>
               <th class="py-2 px-4 border-b-2 border-gray-200">ACTIONS</th>
             </tr>
           </thead>
 
           <tbody>
-            <tr class="border-b text-gray-600">
-              <th class="px-4 py-3">1</th>
-              <th class="px-4 py-3">Palonchiyev Pustonchi</th>
-              <th class="px-4 py-3">31.12.2000</th>
-              <th class="px-4 py-3 text-red-500"><a href="noname.html">10,000 so'm</a></th>
-              <th class="px-4 py-3 flex justify-center gap-4">
-                <span class="px-2 text-blue-600"><i class="fa-solid fa-eye"></i></span>
-                <span class="px-2 text-gray-600"><i class="fa-solid fa-pen-to-square"></i></span>
-                <span class="text-gray-500"><i class="fa-solid fa-trash"></i></span>
-              </th>
-            </tr>
+            <Product
+              v-for="product in products"
+              :key="product._id"
+              :product="{ ordinal_number: products.length + 1, ...product }"
+            />
           </tbody>
         </table>
       </div>
     </div>
-  </div>
+  </body>
 </template>
 
-<style scoped></style>
+<style scoped>
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css');
+</style>
