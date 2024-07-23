@@ -1,4 +1,5 @@
 <script setup>
+import { faEye, faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { computed } from 'vue';
 
 const props = defineProps(['product']);
@@ -24,9 +25,9 @@ const isPair = (props.product.__v + 1) % 2 === 0
     <th class="px-4 py-3">{{product.createdAt}}</th>
     <th class="px-4 py-3">{{product.price}} usd</th>
     <th class="px-4 py-3 flex justify-center gap-4">
-      <span class="px-1 text-blue-600 cursor-pointer"><i class="fa-solid text-lg fa-eye"></i></span>
-      <span class="px-1 text-green-600 cursor-pointer"><i class="fa-solid text-lg fa-pen-to-square"></i></span>
-      <span class="px-1 text-red-600 cursor-pointer"><i class="fa-solid text-lg fa-trash"></i></span>
+      <font-awesome-icon class="px-1 text-blue-600 text-lg cursor-pointer" :icon="faEye"></font-awesome-icon>
+      <font-awesome-icon class="px-1 text-green-600 text-lg cursor-pointer" :icon="faPenToSquare"></font-awesome-icon>
+      <font-awesome-icon class="px-1 text-red-600 text-lg cursor-pointer" :icon="faTrash"></font-awesome-icon>
     </th>
   </tr>
 

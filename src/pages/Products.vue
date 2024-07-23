@@ -1,7 +1,8 @@
 <script setup>
-import axiosInstance from '@/axios';
-import Product from '@/components/product/Product.vue';
+import axiosInstance, { getToken } from '@/axios';
+import Product from '@/components/products/Product.vue';
 import { onMounted, ref } from 'vue';
+import { toast } from 'vue3-toastify';
 
 const products = ref([]);
 
@@ -16,6 +17,17 @@ onMounted(async () => {
 
     return { ...el, createdAt: result };
   });
+});
+onMounted(() => {
+  getToken() &&
+    toast('You logged in succesfully', {
+      theme: 'auto',
+      type: 'success',
+      position: 'bottom-right',
+      autoClose: 1500,
+      transition: 'slide',
+      dangerouslyHTMLString: true,
+    });
 });
 </script>
 
@@ -48,5 +60,4 @@ onMounted(async () => {
 </template>
 
 <style scoped>
-@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css');
 </style>
