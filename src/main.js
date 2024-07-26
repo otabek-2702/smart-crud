@@ -13,6 +13,7 @@ import App from './App.vue'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 import router from './router'
+import LoadingSpinner from './components/loading-spinner/LoadingSpinner.vue';
 
 const vuetify = createVuetify({
   components,
@@ -23,6 +24,7 @@ const vuetify = createVuetify({
 createApp(App)
   .use(router)
   .use(vuetify)
+  .component('loading-spinner', LoadingSpinner)
   .component("font-awesome-icon", FontAwesomeIcon)
   .mount('#app')
 

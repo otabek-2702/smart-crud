@@ -2,7 +2,6 @@
 const handleLogOut = () => {
   localStorage.removeItem('authToken');
   sessionStorage.removeItem('authToken');
-  router.replace({ name: 'login' });
 };
 </script>
 
@@ -15,7 +14,7 @@ const handleLogOut = () => {
       aria-label="Global"
     >
       <div class="flex items-center justify-between">
-        <a class="flex-none text-xl font-semibold dark:text-white" href="#" aria-label="SMART IT"
+        <a class="flex-none text-xl font-semibold dark:text-white" href="/" aria-label="SMART IT"
           >SMART IT</a
         >
         <div class="sm:hidden">
@@ -63,7 +62,7 @@ const handleLogOut = () => {
             <router-link
               class="py-3 ps-px sm:px-3 font-medium"
               active-class="text-blue-600 dark:text-blue-500"
-              to="/"
+              :to="{name: 'products'}"
               >Products
             </router-link>
           </span>
@@ -73,15 +72,15 @@ const handleLogOut = () => {
             <router-link
               class="py-3 ps-px sm:px-3 font-medium"
               active-class="text-blue-600 dark:text-blue-500"
-              to="/categories"
+              :to="{name: 'categories'}"
             >
               Categories
             </router-link>
           </span>
-          <a
+          <router-link
             @click="handleLogOut"
             class="flex items-center gap-x-2 font-medium text-gray-500 hover:text-blue-600 sm:border-s sm:border-gray-300 py-2 sm:py-0 sm:ms-4 sm:my-6 sm:ps-6 dark:border-neutral-700 dark:text-neutral-400 dark:hover:text-blue-500"
-            href="#"
+            :to="{name: 'login'}"
           >
             <svg
               class="flex-shrink-0 size-4"
@@ -100,11 +99,12 @@ const handleLogOut = () => {
               />
             </svg>
             Log out
-          </a>
+          </router-link>
         </div>
       </div>
     </nav>
   </header>
 </template>
 
-<style scoped></style>
+<style scoped>
+</style>

@@ -1,7 +1,6 @@
 <script setup>
 import axiosInstance from '@/axios';
-import LoadingSpinner from '@/components/loading-spinner/LoadingSpinner.vue';
-import { computed, ref, watch } from 'vue';
+import {  ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { toast } from 'vue3-toastify';
 
@@ -20,12 +19,12 @@ watch(errorMessage, (newVal) => {
   }
 });
 
-const saveAuth = (response) => {
+const saveAuth = (token) => {
   if (doRemember.value) {
-    localStorage.setItem('authToken', response.data.data);
+    localStorage.setItem('authToken', token);
     router.push({ name: 'products' });
   } else {
-    sessionStorage.setItem('authToken', response.data.data);
+    sessionStorage.setItem('authToken', token);
     router.push({ name: 'products' });
   }
 };
@@ -39,7 +38,7 @@ const handleSubmit = async () => {
     });
 
     if (adminResponse.status === 200) {
-      saveAuth(adminResponse);
+      saveAuth(adminResponse.data.data);
       localStorage.setItem('isAdmin', true);
     }
   } catch (error) {
@@ -53,7 +52,7 @@ const handleSubmit = async () => {
     });
 
     if (sellerResponse.status === 200) {
-      saveAuth(sellerResponse);
+      saveAuth(sellerResponse.data.data);
     }
 
     // reset error message
@@ -76,7 +75,7 @@ const handleSubmit = async () => {
 </script>
 
 <template>
-  <LoadingSpinner v-if="isLoading" />
+  <loading-spinner v-if="isLoading" />
 
   <!-- section -->
   <section class="bg-gray-50 dark:bg-gray-900">
