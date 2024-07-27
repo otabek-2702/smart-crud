@@ -43,7 +43,8 @@ const handleSubmit = async () => {
     isLoading: true,
   });
   try {
-    const response = await axiosInstance.put(`/products/${id}`, {name: product.name, category: product.category});
+    const {name, price, category} = product.value
+    const response = await axiosInstance.put(`/products/${id}`, {name, price, category});
     if (response.data.status === 'success') {
       toast.update(loadToastId, {
         type: 'success',

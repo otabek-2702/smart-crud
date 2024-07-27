@@ -1,7 +1,7 @@
 <script setup>
 import axiosInstance from '@/axios';
-import {  faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
-import {  ref } from 'vue';
+import { faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { ref } from 'vue';
 import { toast } from 'vue3-toastify';
 
 const props = defineProps(['product']);
@@ -19,9 +19,14 @@ const deleteProduct = async () => {
   try {
     const response = await axiosInstance.delete(`/products/${props.product._id}`);
     if (response.data.status === 'success') {
-      // setTimeout(() => {
       emits('delete-product', props.product._id);
-      // }, 800);
+      toast.update(loadToastId, {
+        render: 'The Product deleted!',
+        autoClose: 1500,
+        closeOnClick: true,
+        closeButton: true,
+        isLoading: false,
+      });
     }
   } catch (error) {
     console.log(error);
@@ -32,14 +37,7 @@ const deleteProduct = async () => {
       transition: 'slide',
       dangerouslyHTMLString: true,
     });
-  }finally{
-    toast.update(loadToastId, {
-      render: 'The Product deleted!',
-      autoClose: 1500,
-      closeOnClick: true,
-      closeButton: true,
-      isLoading: false,
-    });
+    toast.remove(loadToastId);
   }
 };
 </script>

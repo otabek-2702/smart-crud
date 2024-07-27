@@ -52,7 +52,7 @@ const router = createRouter({
     {
       path: '/categories',
       name: 'categories',
-      component: () => import('@/pages/Categories.vue')
+      component: () => import('@/pages/CategoriesTable.vue')
     },
 
 
