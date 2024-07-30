@@ -1,1 +1,1 @@
-export {default as transformCreatedAtValue} from './transformCreatedAtValue'
+export {default as transformProductsData} from '././transformProductsData'

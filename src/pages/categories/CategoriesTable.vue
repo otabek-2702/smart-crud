@@ -1,20 +1,19 @@
 <script setup>
-import axiosInstance, { getToken } from '@/axios';
-import ProductTable from '@/components/products/ProductTable.vue';
-import { transformCreatedAtValue } from '@/utilities';
+import axiosInstance from '@/axios';
+import CategoryTable from '@/components/categories/CategoryTable.vue';
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { toast } from 'vue3-toastify';
 
 const router = useRouter();
-const products = ref([]);
+const categories = ref([]);
 const isLoading = ref(false);
 
-const getProducts = async () => {
+const getCategorys = async () => {
   isLoading.value = true;
   try {
-    const response = await axiosInstance.get('/products');
-    products.value = transformCreatedAtValue(response.data.data) // ordinal number is adding from this util
+    const response = await axiosInstance.get('/categories');
+    categories.value = response.data.data.map((el,i) => ({...el, ordinal_number: i+1}))
   } catch (error) {
     console.log(error);
     toast(error.message, {
@@ -29,25 +28,13 @@ const getProducts = async () => {
   }
 };
 
-onMounted(() => getProducts());
-onMounted(() => {
-  if (getToken() && !sessionStorage.getItem('logged')) {
-    toast('You logged in succesfully', {
-      theme: 'auto',
-      type: 'success',
-      position: 'bottom-right',
-      autoClose: 1500,
-      transition: 'slide',
-      dangerouslyHTMLString: true,
-    });
-    sessionStorage.setItem('logged', '1')
-  }
-})
+onMounted(() => getCategorys());
 
-// delete product from local data
 
-const deleteProductLocal = (id) => {
-  products.value = products.value.filter((p) => p._id !== id);
+// delete category from local data
+
+const deleteCategoryLocal = (id) => {
+  categories.value = categories.value.filter((c) => c._id !== id);
 };
 </script>
 
@@ -59,10 +46,10 @@ const deleteProductLocal = (id) => {
         <v-spacer></v-spacer>
         <button
           type="button"
-          @click="router.push({name: 'product-create'})"
+          @click="router.push({name: 'categories-create'})"
           class="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-green-700 rounded-lg focus:ring-4 focus:ring-green-200 dark:focus:ring-green-900 hover:bg-green-800"
         >
-          Add product
+          Add category
         </button>
       </div>
       <div>
@@ -71,18 +58,16 @@ const deleteProductLocal = (id) => {
             <tr class="bg-gray-100">
               <th class="py-2 px-4 border-b-2 border-gray-200">№</th>
               <th class="py-2 px-4 border-b-2 border-gray-200">Name</th>
-              <th class="py-2 px-4 border-b-2 border-gray-200">Created data</th>
-              <th class="py-2 px-4 border-b-2 border-gray-200">Price</th>
               <th class="py-2 px-4 border-b-2 border-gray-200">ACTIONS</th>
             </tr>
           </thead>
 
           <tbody>
-            <ProductTable
-              @delete-product="deleteProductLocal"
-              v-for="product in products"
-              :key="product._id"
-              :product="product"
+            <CategoryTable
+            @delete-category="deleteCategoryLocal"
+              v-for="category in categories"
+              :key="category._id"
+              :category="category"
             />
           </tbody>
         </table>

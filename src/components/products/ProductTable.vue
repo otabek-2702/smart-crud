@@ -1,7 +1,5 @@
 <script setup>
 import axiosInstance from '@/axios';
-import { faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
-import { ref } from 'vue';
 import { toast } from 'vue3-toastify';
 
 const props = defineProps(['product']);
@@ -30,14 +28,15 @@ const deleteProduct = async () => {
     }
   } catch (error) {
     console.log(error);
-    toast(error.message, {
-      theme: 'auto',
+    toast.update(loadToastId, {
       type: 'error',
-      autoClose: 1700,
-      transition: 'slide',
-      dangerouslyHTMLString: true,
+      render: error.message,
+      autoClose: 1500,
+      theme: 'auto',
+      closeOnClick: true,
+      closeButton: true,
+      isLoading: false,
     });
-    toast.remove(loadToastId);
   }
 };
 </script>
@@ -46,9 +45,12 @@ const deleteProduct = async () => {
   <tr class="odd:text-gray-800 even:bg-gray-100">
     <th class="px-4 py-3">{{ product.ordinal_number }}</th>
     <th class="px-4 py-3">
-      <router-link :to="{ name: 'products-view', params: { id: product._id } }">
+      <router-link :to="{ path: `products/${product._id}`, query: { v: null } }">
         {{ product.name }}
       </router-link>
+    </th>
+    <th class="px-4 py-3">
+      {{ product.category_name }}
     </th>
     <th class="px-4 py-3">{{ product.createdAt }}</th>
     <th class="px-4 py-3">{{ product.price }} usd</th>
@@ -56,14 +58,14 @@ const deleteProduct = async () => {
       <router-link :to="{ name: 'product-edit', params: { id: product._id } }">
         <font-awesome-icon
           class="px-1 text-green-600 text-lg cursor-pointer"
-          :icon="faPenToSquare"
+          icon="fas fa-pen-to-square"
         ></font-awesome-icon>
       </router-link>
 
       <font-awesome-icon
         @click="deleteProduct"
         class="px-1 text-red-600 text-lg cursor-pointer"
-        :icon="faTrash"
+        icon="fas fa-trash"
       ></font-awesome-icon>
     </th>
   </tr>

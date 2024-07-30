@@ -18,20 +18,10 @@ const router = createRouter({
       component: Home
     },
     {
-      path: '/products/',
-      component: { render: () => h(RouterView) },
-      children: [
-        {
-          path: '',
-          name: 'products',
-          component: () => import('@/pages/ProductsTable.vue'),
-        },
-        {
-          path: ':id',
-          name: 'products-view',
-          component: () => import('@/pages/ProductView.vue'),
-        },
-      ]
+      path: '/products',
+      name: 'products',
+      component: () => import('@/pages/products/ProductsTable.vue'),
+
     },
     {
       path: '/product',
@@ -40,19 +30,32 @@ const router = createRouter({
         {
           path: 'create',
           name: 'product-create',
-          component: () => import('@/pages/ProductCreate.vue'),
+          component: () => import('@/pages/products/ProductCreate.vue'),
         },
         {
           path: ':id',
           name: 'product-edit',
-          component: () => import('@/pages/ProductEdit.vue'),
+          alias: '/products/:id',
+          component: () => import('@/pages/products/ProductEdit.vue'),
         },
       ]
     },
     {
       path: '/categories',
-      name: 'categories',
-      component: () => import('@/pages/CategoriesTable.vue')
+      component: { render: () => h(RouterView) },
+      children: [
+        {
+          path: "",
+          name: 'categories',
+          component: () => import('@/pages/categories/CategoriesTable.vue')
+
+        },
+        {
+          path: "create",
+          name: "categories-create",
+          component: () => import('@/pages/categories/CategoryCreate.vue')
+        }
+      ],
     },
 
 

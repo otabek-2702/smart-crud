@@ -1,6 +1,7 @@
 <script setup>
 import { useRoute } from 'vue-router';
 import Navbar from './components/navbar/Navbar.vue';
+
 const route = useRoute()
 
 </script>
