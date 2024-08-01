@@ -2,12 +2,14 @@
 import axiosInstance, { getToken } from '@/axios';
 import ProductTable from '@/components/products/ProductTable.vue';
 import {  transformProductsData } from '@/utilities';
+import { useAbility } from '@casl/vue';
 import { onMounted, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { toast } from 'vue3-toastify';
 
 const router = useRouter();
 const { query } = useRoute();
+const { can} = useAbility()
 const products = ref([]);
 const categories = ref([]);
 const filterCategory = ref(query.c ?? '');
@@ -99,7 +101,8 @@ const deleteProductLocal = (id) => {
         <button
           type="button"
           @click="router.push({ name: 'product-create' })"
-          class="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-green-700 rounded-lg focus:ring-4 focus:ring-green-200 dark:focus:ring-green-900 hover:bg-green-800"
+          v-if="can('create', 'Product')"
+          class="inline-flex items-center px-5 py-1 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-green-700 rounded-lg focus:ring-4 focus:ring-green-200 dark:focus:ring-green-900 hover:bg-green-800"
         >
           Add product
         </button>
@@ -116,7 +119,7 @@ const deleteProductLocal = (id) => {
               <th class="py-2 px-4 border-b-2 border-gray-200">Category</th>
               <th class="py-2 px-4 border-b-2 border-gray-200">Created data</th>
               <th class="py-2 px-4 border-b-2 border-gray-200">Price</th>
-              <th class="py-2 px-4 border-b-2 border-gray-200">ACTIONS</th>
+              <th class="py-2 px-4 border-b-2 border-gray-200" v-if="can('edit', 'Product') || can('delete', 'product')">ACTIONS</th>
             </tr>
           </thead>
 

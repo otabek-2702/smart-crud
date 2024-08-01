@@ -1,11 +1,13 @@
 <script setup>
 import axiosInstance from '@/axios';
 import CategoryTable from '@/components/categories/CategoryTable.vue';
+import { useAbility } from '@casl/vue';
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { toast } from 'vue3-toastify';
 
 const router = useRouter();
+const {can } = useAbility()
 const categories = ref([]);
 const isLoading = ref(false);
 
@@ -40,11 +42,12 @@ const deleteCategoryLocal = (id) => {
 
 <template>
   <loading-spinner v-if="isLoading" />
-  <body class="bg-gray-200 min-[h-screen] pb-8">
+  <body class="bg-gray-200 pb-8" style="min-height: 90vh">
     <div class="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="d-flex pt-3 pb-4">
+      <div class="d-flex pt-3 pb-4" >
         <v-spacer></v-spacer>
         <button
+        v-if="can('create', 'Category')"
           type="button"
           @click="router.push({name: 'categories-create'})"
           class="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-green-700 rounded-lg focus:ring-4 focus:ring-green-200 dark:focus:ring-green-900 hover:bg-green-800"
@@ -52,7 +55,10 @@ const deleteCategoryLocal = (id) => {
           Add category
         </button>
       </div>
-      <div>
+      <div class="flex justify-center" v-if="!categories.length">
+        <img src="@/assets/nodata.png" alt="" />
+      </div>
+      <div v-else>
         <table class="min-w-full bg-white rounded-lg overflow-hidden shadow-2xl">
           <thead>
             <tr class="bg-gray-100">

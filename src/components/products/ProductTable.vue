@@ -1,9 +1,12 @@
 <script setup>
 import axiosInstance from '@/axios';
+import { useAbility } from '@casl/vue';
 import { toast } from 'vue3-toastify';
 
 const props = defineProps(['product']);
 const emits = defineEmits(['delete-product']);
+
+const {can} = useAbility()
 
 const deleteProduct = async () => {
   const loadToastId = toast.loading('The Product is deleting!', {
@@ -45,24 +48,29 @@ const deleteProduct = async () => {
   <tr class="odd:text-gray-800 even:bg-gray-100">
     <th class="px-4 py-3">{{ product.ordinal_number }}</th>
     <th class="px-4 py-3">
-      <router-link :to="{ path: `products/${product._id}`, query: { v: null } }">
+      <router-link v-if="can('read', 'Product')" :to="{ path: `products/${product._id}`, query: { v: null } }">
         {{ product.name }}
       </router-link>
+      <span v-else>
+        {{ product.name }}
+      </span>
     </th>
     <th class="px-4 py-3">
       {{ product.category_name }}
     </th>
     <th class="px-4 py-3">{{ product.createdAt }}</th>
     <th class="px-4 py-3">{{ product.price }} usd</th>
-    <th class="px-4 py-3 flex justify-center gap-4">
+    <th class="px-4 py-3 flex justify-center gap-4" v-if="can('edit', 'Product') || can('delete', 'product')">
       <router-link :to="{ name: 'product-edit', params: { id: product._id } }">
         <font-awesome-icon
+        v-if="can('edit', 'Product')"
           class="px-1 text-green-600 text-lg cursor-pointer"
           icon="fas fa-pen-to-square"
         ></font-awesome-icon>
       </router-link>
 
       <font-awesome-icon
+      v-if="can('delete', 'product')"
         @click="deleteProduct"
         class="px-1 text-red-600 text-lg cursor-pointer"
         icon="fas fa-trash"

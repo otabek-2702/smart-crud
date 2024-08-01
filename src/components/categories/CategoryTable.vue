@@ -1,10 +1,12 @@
 <script setup>
 import axiosInstance from '@/axios';
+import { useAbility } from '@casl/vue';
 import { nextTick, ref } from 'vue';
 import { toast } from 'vue3-toastify';
 
 const props = defineProps(['category']);
 const emits = defineEmits(['delete-category'])
+const {can} = useAbility()
 const categoryName = ref(props.category.name);
 const myInput = ref(null);
 const isEditing = ref(false);
@@ -128,7 +130,7 @@ const deleteCategory = async () => {
       />
     </th>
     <th class="px-4 py-4 flex justify-center gap-4">
-      <router-link :to="{ name: 'home' }">
+      <router-link v-if="can('read', 'Products')" :to="{ name: 'products', query:{c: category._id} }">
         <font-awesome-icon
           class="px-1 text-blue-600 text-lg cursor-pointer"
           icon="fa fa-eye"
@@ -144,13 +146,14 @@ const deleteCategory = async () => {
       </font-awesome-icon>
 
       <font-awesome-icon
+      v-if="can('edit', 'Category')"
         @click="editCategoryIcon"
         class="px-1 text-green-600 text-lg cursor-pointer"
         icon="fas fa-pen-to-square"
-        v-else
       ></font-awesome-icon>
 
       <font-awesome-icon
+      v-if="can('delete', 'Category')"
         @click="dialog = true"
         class="px-1 text-red-600 text-lg cursor-pointer"
         icon="fas fa-trash"

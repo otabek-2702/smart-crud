@@ -13,6 +13,8 @@ import router from './router'
 // Components
 import App from './App.vue'
 
+import LoadingSpinner from './components/loading-spinner/LoadingSpinner.vue';
+
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core'
 
@@ -20,7 +22,8 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { faChevronRight ,faCircleCheck, faEye, faPenToSquare, faTrash} from '@fortawesome/free-solid-svg-icons'
 library.add([faChevronRight,faCircleCheck, faEye, faPenToSquare, faTrash])
 
-import LoadingSpinner from './components/loading-spinner/LoadingSpinner.vue';
+import ability from './ability';
+import { abilitiesPlugin } from '@casl/vue';
 
 const vuetify = createVuetify({
   components,
@@ -30,6 +33,7 @@ const vuetify = createVuetify({
 createApp(App)
   .use(router)
   .use(vuetify)
+  .use(abilitiesPlugin, ability)
   .component('loading-spinner', LoadingSpinner)
   .component("font-awesome-icon", FontAwesomeIcon)
   .mount('#app')

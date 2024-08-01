@@ -1,10 +1,13 @@
 <script setup>
+import { defineAbilitiesFor } from '@/ability';
 import axiosInstance from '@/axios';
-import {  ref, watch } from 'vue';
+import { useAbility } from '@casl/vue';
+import { ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { toast } from 'vue3-toastify';
 
 const router = useRouter();
+const { update } = useAbility();
 
 const isLoading = ref(false);
 const errorMessage = ref('');
@@ -13,20 +16,22 @@ const email = ref('');
 const password = ref('');
 const doRemember = ref(true);
 
-watch(errorMessage, (newVal) => {
-  if (newVal.lastIndexOf('401')) {
-    errorMessage.value = 'Email yoki Parol xato kiritilgan ';
-  }
-});
+// watch(errorMessage, (newVal) => {
+  
+// });
 
-const saveAuth = (token) => {
+const saveAuth = (token, role = '') => {
   if (doRemember.value) {
     localStorage.setItem('authToken', token);
+    localStorage.setItem('userRole', role);
     router.push({ name: 'products' });
   } else {
     sessionStorage.setItem('authToken', token);
+    sessionStorage.setItem('userRole', role);
     router.push({ name: 'products' });
   }
+
+  update(defineAbilitiesFor().rules);
 };
 
 const handleSubmit = async () => {
@@ -38,7 +43,7 @@ const handleSubmit = async () => {
     });
 
     if (adminResponse.status === 200) {
-      saveAuth(adminResponse.data.data);
+      saveAuth(adminResponse.data.data, 'admin');
       localStorage.setItem('isAdmin', true);
     }
   } catch (error) {
@@ -52,16 +57,17 @@ const handleSubmit = async () => {
     });
 
     if (sellerResponse.status === 200) {
-      saveAuth(sellerResponse.data.data);
+      saveAuth(sellerResponse.data.data, 'seller');
     }
 
     // reset error message
     errorMessage.value = '';
   } catch (error) {
     console.log(error);
+    errorMessage.value = error.message;
   }
-  errorMessage.value &&
-    toast(errorMessage, {
+  if (newVal.lastIndexOf('401')) {
+    toast('Email yoki Parol xato kiritilgan ', {
       theme: 'auto',
       type: 'error',
       position: 'bottom-right',
@@ -69,6 +75,7 @@ const handleSubmit = async () => {
       transition: 'slide',
       dangerouslyHTMLString: true,
     });
+  }
 
   isLoading.value = false;
 };
