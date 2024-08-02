@@ -3,6 +3,7 @@ import Home from '@/pages/Home.vue'
 import { createRouter, createWebHistory, RouterView } from 'vue-router'
 import checkAuthMiddleware from './checkAuthMiddleware'
 import { h } from 'vue'
+import checkPermissionsMiddleware from './checkPermissionsMiddleware'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -21,7 +22,9 @@ const router = createRouter({
       path: '/products',
       name: 'products',
       component: () => import('@/pages/products/ProductsTable.vue'),
-
+      meta: {
+        permissions: [{ can: 'read', a: 'Products' }]
+      }
     },
     {
       path: '/product',
@@ -31,12 +34,18 @@ const router = createRouter({
           path: 'create',
           name: 'product-create',
           component: () => import('@/pages/products/ProductCreate.vue'),
+          meta: {
+            permissions: [{ can: 'create', a: 'Product' }]
+          }
         },
         {
           path: ':id',
           name: 'product-edit',
           alias: '/products/:id',
           component: () => import('@/pages/products/ProductEdit.vue'),
+          meta: {
+            permissions: [{ can: 'edit', a: 'Product' }]
+          }
         },
       ]
     },
@@ -47,13 +56,19 @@ const router = createRouter({
         {
           path: "",
           name: 'categories',
-          component: () => import('@/pages/categories/CategoriesTable.vue')
+          component: () => import('@/pages/categories/CategoriesTable.vue'),
+          meta: {
+            permissions: [{ can: 'read', a: 'Categories' }]
+          }
 
         },
         {
           path: "create",
           name: "categories-create",
-          component: () => import('@/pages/categories/CategoryCreate.vue')
+          component: () => import('@/pages/categories/CategoryCreate.vue'),
+          meta: {
+            permissions: [{ can: 'create', a: 'Category' }]
+          }
         }
       ],
     },
@@ -69,6 +84,7 @@ const router = createRouter({
 })
 
 
-router.afterEach((to, from, failure) => checkAuthMiddleware(to, from, failure, router))
+router.afterEach((to) => checkPermissionsMiddleware(to))
+router.afterEach((to) => checkAuthMiddleware(to, router))
 
 export default router

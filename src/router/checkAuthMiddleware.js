@@ -1,6 +1,6 @@
 import { getToken } from "@/axios"
 
-const checkAuthMiddleware = (to, from, failure, router) => {
+const checkAuthMiddleware = (to, router) => {
     const authed = getToken()
     if (to.name !== 'login' && !authed) {
         router.back()

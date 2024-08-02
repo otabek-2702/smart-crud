@@ -146,7 +146,7 @@ const deleteCategory = async () => {
       </font-awesome-icon>
 
       <font-awesome-icon
-      v-if="can('edit', 'Category')"
+      v-if="can('edit', 'Category') && !isEditing"
         @click="editCategoryIcon"
         class="px-1 text-green-600 text-lg cursor-pointer"
         icon="fas fa-pen-to-square"

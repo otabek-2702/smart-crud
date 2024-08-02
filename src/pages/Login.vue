@@ -1,8 +1,8 @@
 <script setup>
 import { defineAbilitiesFor } from '@/ability';
-import axiosInstance from '@/axios';
+import axiosInstance, { getToken } from '@/axios';
 import { useAbility } from '@casl/vue';
-import { ref, watch } from 'vue';
+import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { toast } from 'vue3-toastify';
 
@@ -17,7 +17,7 @@ const password = ref('');
 const doRemember = ref(true);
 
 // watch(errorMessage, (newVal) => {
-  
+
 // });
 
 const saveAuth = (token, role = '') => {
@@ -44,8 +44,8 @@ const handleSubmit = async () => {
 
     if (adminResponse.status === 200) {
       saveAuth(adminResponse.data.data, 'admin');
-      localStorage.setItem('isAdmin', true);
     }
+    errorMessage.value = '';
   } catch (error) {
     console.log(error);
     errorMessage.value = error.message;
@@ -66,7 +66,7 @@ const handleSubmit = async () => {
     console.log(error);
     errorMessage.value = error.message;
   }
-  if (newVal.lastIndexOf('401')) {
+  if (errorMessage.value.lastIndexOf('401') && !getToken()) {
     toast('Email yoki Parol xato kiritilgan ', {
       theme: 'auto',
       type: 'error',
