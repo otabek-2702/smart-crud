@@ -24,11 +24,11 @@ const saveAuth = (token, role = '') => {
   if (doRemember.value) {
     localStorage.setItem('authToken', token);
     localStorage.setItem('userRole', role);
-    router.push({ name: 'products' });
+    router.push({ name: 'home' });
   } else {
     sessionStorage.setItem('authToken', token);
     sessionStorage.setItem('userRole', role);
-    router.push({ name: 'products' });
+    router.push({ name: 'home' });
   }
 
   update(defineAbilitiesFor().rules);

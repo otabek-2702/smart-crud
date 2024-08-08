@@ -2,6 +2,8 @@
 const handleLogOut = () => {
   localStorage.removeItem('authToken');
   sessionStorage.removeItem('authToken');
+  localStorage.removeItem('userRole');
+  sessionStorage.removeItem('logged')
 };
 </script>
 

@@ -51,19 +51,6 @@ const getProducts = async (categoryFilter) => {
 onMounted(() => {
   getProducts(query.c ?? '');
 });
-onMounted(() => {
-  if (getToken() && !sessionStorage.getItem('logged')) {
-    toast('You logged in succesfully', {
-      theme: 'auto',
-      type: 'success',
-      position: 'bottom-right',
-      autoClose: 1500,
-      transition: 'slide',
-      dangerouslyHTMLString: true,
-    });
-    sessionStorage.setItem('logged', '1');
-  }
-});
 
 // delete product from local data
 
