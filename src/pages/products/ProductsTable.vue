@@ -106,7 +106,7 @@ const deleteProductLocal = (id) => {
               <th class="py-2 px-4 border-b-2 border-gray-200">Category</th>
               <th class="py-2 px-4 border-b-2 border-gray-200">Created data</th>
               <th class="py-2 px-4 border-b-2 border-gray-200">Price</th>
-              <th class="py-2 px-4 border-b-2 border-gray-200" v-if="can('edit', 'Product') || can('delete', 'product')">ACTIONS</th>
+              <th class="py-2 px-4 border-b-2 border-gray-200" v-if="can('edit', 'Product') || can('delete', 'Product')">ACTIONS</th>
             </tr>
           </thead>
 

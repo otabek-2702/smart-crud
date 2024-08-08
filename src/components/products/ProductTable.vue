@@ -60,7 +60,7 @@ const deleteProduct = async () => {
     </th>
     <th class="px-4 py-3">{{ product.createdAt }}</th>
     <th class="px-4 py-3">{{ product.price }} usd</th>
-    <th class="px-4 py-3 flex justify-center gap-4" v-if="can('edit', 'Product') || can('delete', 'product')">
+    <th class="px-4 py-3 flex justify-center gap-4" v-if="can('edit', 'Product') || can('delete', 'Product')">
       <router-link :to="{ name: 'product-edit', params: { id: product._id } }">
         <font-awesome-icon
         v-if="can('edit', 'Product')"

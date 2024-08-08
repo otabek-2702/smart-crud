@@ -19,8 +19,8 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core'
 
 /* import specific icons */
-import { faChevronRight ,faCircleCheck, faEye, faPenToSquare, faTrash} from '@fortawesome/free-solid-svg-icons'
-library.add([faChevronRight,faCircleCheck, faEye, faPenToSquare, faTrash])
+import { faChevronRight, faCircleCheck, faEye, faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons'
+library.add([faChevronRight, faCircleCheck, faEye, faPenToSquare, faTrash])
 
 import ability from './ability';
 import { abilitiesPlugin } from '@casl/vue';
@@ -31,9 +31,9 @@ const vuetify = createVuetify({
 })
 
 createApp(App)
+  .use(abilitiesPlugin, ability)
   .use(router)
   .use(vuetify)
-  .use(abilitiesPlugin, ability)
   .component('loading-spinner', LoadingSpinner)
   .component("font-awesome-icon", FontAwesomeIcon)
   .mount('#app')
